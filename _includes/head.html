@@ -1,0 +1,21 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {%- seo -%}
+  <link rel="stylesheet" href="{{ "/assets/bootstrap.min.css" | relative_url }}">
+
+
+{% if page.external-css %}
+  {% for css-url in page.external-css %}
+    <link rel="stylesheet" href="{{ css-url | relative_url }}">
+  {% endfor %}
+{% endif %}
+
+{% if page.external-js %}
+  {% for js-url in page.external-js %}
+    <script src="{{ js-url | relative_url }}"></script>
+  {% endfor %}
+{% endif %}
+
+</head>
