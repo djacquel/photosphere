@@ -7,7 +7,7 @@
 
         l = links[i];
 
-        var is_external_link = l.hostname != window.location.hostname;
+        var is_external_link = l.hostname && l.hostname != window.location.hostname;
         var is_internal_document = is_external_link == false && l.pathname.includes("assets") && l.pathname.includes(".pdf");
 
 

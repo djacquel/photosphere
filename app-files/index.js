@@ -22,6 +22,7 @@
   var data = window.APP_DATA;
 
   // Grab elements from DOM.
+  var panoContainer = document.querySelector('#pano');
   var panoElement = document.querySelector('#pano');
   var sceneNameElement = document.querySelector('#titleBar .sceneName');
   var sceneListElement = document.querySelector('#sceneList');
@@ -34,31 +35,26 @@
   if (window.matchMedia) {
     var setMode = function() {
       if (mql.matches) {
-        document.body.classList.remove('desktop');
-        document.body.classList.add('mobile');
+        panoContainer.classList.remove('desktop');
+        panoContainer.classList.add('mobile');
       } else {
-        document.body.classList.remove('mobile');
-        document.body.classList.add('desktop');
+        panoContainer.classList.remove('mobile');
+        panoContainer.classList.add('desktop');
       }
     };
     var mql = matchMedia("(max-width: 500px), (max-height: 500px)");
     setMode();
     mql.addListener(setMode);
   } else {
-    document.body.classList.add('desktop');
+    panoContainer.classList.add('desktop');
   }
 
   // Detect whether we are on a touch device.
-  document.body.classList.add('no-touch');
+  panoContainer.classList.add('no-touch');
   window.addEventListener('touchstart', function() {
-    document.body.classList.remove('no-touch');
-    document.body.classList.add('touch');
+    panoContainer.classList.remove('no-touch');
+    panoContainer.classList.add('touch');
   });
-
-  // Use tooltip fallback mode on IE < 11.
-  if (bowser.msie && parseFloat(bowser.version) < 11) {
-    document.body.classList.add('tooltip-fallback');
-  }
 
   // Viewer options.
   var viewerOpts = {
@@ -72,7 +68,7 @@
 
   // Create scenes.
   var scenes = data.scenes.map(function(data) {
-    var urlPrefix = "tiles";
+    var urlPrefix = "/app-files/tiles";
     var source = Marzipano.ImageUrlSource.fromString(
       urlPrefix + "/" + data.id + "/{z}/{f}/{y}/{x}.jpg",
       { cubeMapPreviewUrl: urlPrefix + "/" + data.id + "/preview.jpg" });
@@ -122,7 +118,7 @@
 
   // Set up fullscreen mode, if supported.
   if (screenfull.enabled && data.settings.fullscreenButton) {
-    document.body.classList.add('fullscreen-enabled');
+    panoContainer.classList.add('fullscreen-enabled');
     fullscreenToggleElement.addEventListener('click', function() {
       screenfull.toggle();
     });
@@ -134,14 +130,14 @@
       }
     });
   } else {
-    document.body.classList.add('fullscreen-disabled');
+    panoContainer.classList.add('fullscreen-disabled');
   }
 
   // Set handler for scene list toggle.
   sceneListToggleElement.addEventListener('click', toggleSceneList);
 
   // Start with the scene list open on desktop.
-  if (!document.body.classList.contains('mobile')) {
+  if (!panoContainer.classList.contains('mobile')) {
     showSceneList();
   }
 
@@ -151,7 +147,7 @@
     el.addEventListener('click', function() {
       switchScene(scene);
       // On mobile, hide scene list after selecting a scene.
-      if (document.body.classList.contains('mobile')) {
+      if (panoContainer.classList.contains('mobile')) {
         hideSceneList();
       }
     });
@@ -253,7 +249,7 @@
 
     // Create image element.
     var icon = document.createElement('img');
-    icon.src = 'img/link.png';
+    icon.src = '/app-files/img/link.png';
     icon.classList.add('link-hotspot-icon');
 
     // Set rotation transform.
@@ -337,7 +333,7 @@
     var modal = document.createElement('div');
     modal.innerHTML = wrapper.innerHTML;
     modal.classList.add('info-hotspot-modal');
-    document.body.appendChild(modal);
+    panoContainer.appendChild(modal);
 
     var toggle = function() {
       wrapper.classList.toggle('visible');
